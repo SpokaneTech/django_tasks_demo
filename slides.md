@@ -26,6 +26,9 @@ section table {
 section table thead th {
   --color-background: black;
 }
+section table tbody td {
+  vertical-align: baseline;
+}
 .emphasis {
     font-weight: bolder;
     color: #11779C;
@@ -124,17 +127,18 @@ Django will ship with three task backends:
 
 ---
 
-|                     | DEP 0014 | Celery                                                                        | django-rq (Redis) | Huey |
-| ------------------- | -------- | ----------------------------------------------------------------------------- | ----------------- | ---- |
-| Background tasks    | ✅        | ✅                                                                             |                   |      |
-| Deferred tasks      | ✅        | ✅                                                                             |                   |      |
-| Task results        | ✅        | With [django-celery-results](https://pypi.org/project/django-celery-results/) |                   |      |
-| Periodic scheduling | ❌        | With [django-celery-beat](https://github.com/celery/django-celery-beat)       |                   |      |
-| Automatic retry     | ❌        | ✅                                                                             |                   |      |
-| Timeouts            | ❌        | ✅                                                                             |                   |      |
-| Hooks               | ❌        | ✅ [Signals](https://docs.celeryq.dev/en/stable/userguide/signals.html)        |                   |      |
-| Monitoring          | ❌        | ✅ various ways, [Flower](https://flower.readthedocs.io/en/latest/)            |                   |      |
-| Setup effort        | Minimal  | Lots                                                                          |
+| Features             | DEP 0014                                                                                            | Celery                                                                          | django-rq (Redis)                                                                                                            | Huey                                                                              |
+| -------------------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Background tasks     | ✅                                                                                                   | ✅                                                                               | ✅                                                                                                                            | ✅                                                                                 |
+| Deferred tasks       | ✅                                                                                                   | ✅                                                                               | ✅                                                                                                                            | ✅                                                                                 |
+| Recurring scheduling | ❌                                                                                                   | ✅ With [django-celery-beat](https://github.com/celery/django-celery-beat)       | ✅ With [rq-scheduler](https://github.com/rq/rq-scheduler)                                                                    | ✅                                                                                 |
+| Task results         | ✅                                                                                                   | ✅ With [django-celery-results](https://pypi.org/project/django-celery-results/) | ✅                                                                                                                            | ✅                                                                                 |
+| Automatic retry      | ❌                                                                                                   | ✅                                                                               | ✅                                                                                                                            | ✅                                                                                 |
+| Timeouts             | ❌                                                                                                   | ✅                                                                               | ✅                                                                                                                            | ✅                                                                                 |
+| Hooks                | ❌<br>but [Django Signals](https://github.com/RealOrangeOne/django-tasks?tab=readme-ov-file#signals) | ✅<br>[Signals](https://docs.celeryq.dev/en/stable/userguide/signals.html)       | ✅<br>[dependencies](https://python-rq.org/docs/#job-dependencies) and [callbacks](https://python-rq.org/docs/#job-callbacks) | ✅<br>[pipelines](https://huey.readthedocs.io/en/latest/guide.html#task-pipelines) |
+| Monitoring           | ❌                                                                                                   | ✅ various ways, [Flower](https://flower.readthedocs.io/en/latest/)              | ✅ With [rq-dashboard](https://github.com/Parallels/rq-dashboard)                                                             | ❌                                                                                 |
+| Setup effort         | Less:<br>management command (worker)                                                                | Lots:<br>queue, worker, beat                                                    | Some:<br>redis, worker                                                                                                       | Some:<br>redis, worker                                                            |
+| Brokers              | Database                                                                                            | RabbitMQ, Redis, others                                                         | Redis                                                                                                                        | Redis, sqlite, FS, in-memory                                                      |
 
 ---
 
